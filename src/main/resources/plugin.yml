@@ -1,5 +1,5 @@
 name: PartyGames
-author: SpaceTacos
+authors: [SpaceTacos, TrollyLoki]
 main: net.spacetacos.partygames.PartyGamesPlugin
 version: ${project.version}
 api-version: 1.16

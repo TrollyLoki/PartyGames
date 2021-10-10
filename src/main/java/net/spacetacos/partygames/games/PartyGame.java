@@ -5,6 +5,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -31,6 +32,7 @@ public abstract class PartyGame {
 
     public void onPlayerDamage(EntityDamageEvent event){}
     public void onPlayerMove(PlayerMoveEvent event){}
+    public void onPlayerInteract(PlayerInteractEvent event){}
 
     public String getName(UUID uuid) {
         return getPartyGamesGame().getScoreboard().getName(uuid);

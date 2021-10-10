@@ -1,6 +1,7 @@
 package net.spacetacos.partygames.games;
 
 import net.spacetacos.partygames.PartyGamesGame;
+import net.spacetacos.partygames.Utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class SpiralSplash extends PartyGame {
     // Select what type of block is cleared from the pool at the start
-    private final String BLOCK_TYPE = "WOOL";
+    private static final String BLOCK_TYPE = "WOOL";
 
     // Creates maps to track each player's spawn point, material, and amount of points
     private Map<UUID, Location> spawns = new HashMap<>();
@@ -37,7 +38,12 @@ public class SpiralSplash extends PartyGame {
     public void start() {
         // Retrieves the spawns and colors lists from config.yml
         List<Location> list = getPartyGamesGame().getPlugin().getConfigLocations("spiralsplash.spawns");
-        List<Material> colors = getPartyGamesGame().getPlugin().getConfigMaterials("spiralsplash.colors");
+        List<Material> colors = getPartyGamesGame().getPlugin().getConfigMaterials("colors");
+
+        // Clearing the water
+        // Gets the corners of the rectangle surrounding the circle of water from config.yml
+        countWater = Utils.reset(getPartyGamesGame().getPlugin(), "spiralsplash.watercoords",
+                b -> b.getType().name().endsWith(BLOCK_TYPE), Material.WATER);
 
         // Counter variable
         int i = 0;
@@ -56,32 +62,6 @@ public class SpiralSplash extends PartyGame {
             setupPlayer(player, location);
 
             i++;
-        }
-        // Clearing the water
-        // Gets the corners of the rectangle surrounding the circle of water from config.yml
-        Location pos1 = getPartyGamesGame().getPlugin().getBlockLocation("spiralsplash.watercoords.pos1");
-        Location pos2 = getPartyGamesGame().getPlugin().getBlockLocation("spiralsplash.watercoords.pos2");
-
-        // Loops through each block in the rectangle
-        for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
-            for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
-
-                // Gets the block at the location
-                Location location = new Location(pos1.getWorld(), x, pos1.getBlockY(), z);
-                Block block = location.getBlock();
-
-                // Checks if the block at the location ends with the selected block type
-                if (block.getType().name().endsWith(BLOCK_TYPE)) {
-                    // Sets the block to water
-                    block.setType(Material.WATER);
-                }
-
-                // Checks if the block at the location is water
-                if (block.getType() == Material.WATER) {
-                    // Counts the amount of water in the circle
-                    countWater++;
-                }
-            }
         }
     }
 
@@ -109,7 +89,7 @@ public class SpiralSplash extends PartyGame {
         // Ends the current party game
         getPartyGamesGame().setGame(null);
         // Closes the current party game
-        getPartyGamesGame().close(); // REMEMBER TO FIX THIS LATER
+        getPartyGamesGame().close(); //FIXME: REMEMBER TO FIX THIS LATER
     }
 
     // Listens for the onPlayerDamage event

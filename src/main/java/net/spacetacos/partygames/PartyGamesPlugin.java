@@ -5,6 +5,7 @@ import net.trollyloki.minigames.library.MiniGameLibraryPlugin;
 import net.trollyloki.minigames.library.managers.MiniGameManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -43,9 +44,16 @@ public class PartyGamesPlugin extends JavaPlugin {
         return list;
     }
 
-    public Location getBlockLocation(String path) {
+    public Location getConfigLocation(String path) {
         ConfigurationSection section = getConfig().getConfigurationSection(path);
-        return new Location(getServer().getWorld(section.getString("world")), section.getInt("x"), section.getInt("y"), section.getInt("z"));
+        World world = getServer().getWorld(section.getString("world"));
+        double x = section.getDouble("x");
+        double y = section.getDouble("y");
+        double z = section.getDouble("z");
+        if (section.contains("yaw") && section.contains("pitch"))
+            return new Location(world, x, y, z, (float) section.getDouble("yaw"), (float) section.getDouble("pitch"));
+        else
+            return new Location(world, x, y, z);
     }
 }
 

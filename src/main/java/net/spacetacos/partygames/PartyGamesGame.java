@@ -6,6 +6,7 @@ import net.trollyloki.minigames.library.managers.MiniGameManager;
 import net.trollyloki.minigames.library.managers.Party;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.UUID;
@@ -52,5 +53,11 @@ public class PartyGamesGame extends Game{
         }
     }
 
+    @Override
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (game != null) {
+            game.onPlayerInteract(event);
+        }
+    }
 }
 

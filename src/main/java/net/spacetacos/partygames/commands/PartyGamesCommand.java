@@ -2,9 +2,7 @@ package net.spacetacos.partygames.commands;
 
 import net.spacetacos.partygames.PartyGamesGame;
 import net.spacetacos.partygames.PartyGamesPlugin;
-import net.spacetacos.partygames.games.OceanParkour;
-import net.spacetacos.partygames.games.PartyGame;
-import net.spacetacos.partygames.games.SpiralSplash;
+import net.spacetacos.partygames.games.*;
 import net.trollyloki.minigames.library.managers.Game;
 import net.trollyloki.minigames.library.managers.Party;
 import org.bukkit.ChatColor;
@@ -32,7 +30,7 @@ public class PartyGamesCommand implements CommandExecutor {
                     if (party != null && party.isModerator(player.getUniqueId())) {
                         if (party.size() <= 8) {
                             if (args.length > 1) {
-                                Function<PartyGamesGame, PartyGame> constructor = null;
+                                Function<PartyGamesGame, PartyGame> constructor;
 
                                 if (args[1].equalsIgnoreCase("parkour")) {
                                     constructor = OceanParkour::new;
@@ -40,6 +38,10 @@ public class PartyGamesCommand implements CommandExecutor {
 
                                 else if (args[1].equalsIgnoreCase("spiral")) {
                                     constructor = SpiralSplash::new;
+                                }
+
+                                else if (args[1].equalsIgnoreCase("ace")) {
+                                    constructor = AceOfSpades::new;
                                 }
 
                                 else {
